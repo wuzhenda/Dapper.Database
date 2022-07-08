@@ -89,7 +89,7 @@ namespace Dapper.Database.Adapters
             else
             {
                 r = connection.Query(command.ToString(), entityToUpdate, transaction, commandTimeout: commandTimeout)
-                    .ToList();
+                    .ToList();              
             }
 
             var values = r.ToList();

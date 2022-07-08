@@ -40,9 +40,17 @@
 
   <ItemGroup Condition="'$(TargetFramework)'=='net48' OR '$(TargetFramework)'=='net48'">
   <ItemGroup Condition="'$(TargetFramework)'=='net48'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net48' OR '$(TargetFramework)'=='net48'">
     <PackageReference Include="Microsoft.SqlServer.Compact" Version="4.0.8876.1" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.6" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.151" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.120" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
+    <PackageReference Include="FirebirdSql.Data.FirebirdClient" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.9" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.3" />
   </ItemGroup>
 
   <ItemGroup>
