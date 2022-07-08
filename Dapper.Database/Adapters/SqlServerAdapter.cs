@@ -40,7 +40,7 @@ namespace Dapper.Database.Adapters
         }
 
         /// <inheritdoc />
-        protected override bool UpdateInternal<T>(IDbConnection connection, IDbTransaction transaction,
+        protected bool UpdateInternalOrg<T>(IDbConnection connection, IDbTransaction transaction,
             int? commandTimeout, TableInfo tableInfo, T entityToUpdate, IEnumerable<string> columnsToUpdate)
         {
             var command = new StringBuilder(UpdateQuery(tableInfo, columnsToUpdate));
@@ -52,13 +52,21 @@ namespace Dapper.Database.Adapters
 
                 if (!values.Any()) return false;
 
-                ApplyGeneratedValues(tableInfo, entityToUpdate, (IDictionary<string, object>) values[0]);
+                ApplyGeneratedValues(tableInfo, entityToUpdate, (IDictionary<string, object>)values[0]);
                 return true;
             }
 
             return connection.Execute(command.ToString(), entityToUpdate, transaction, commandTimeout) > 0;
         }
 
+        /// <inheritdoc />
+        ///{ add by Henry,for I don't think update need to updae generated column;2022-07-08 }
+        protected override bool UpdateInternal<T>(IDbConnection connection, IDbTransaction transaction,
+           int? commandTimeout, TableInfo tableInfo, T entityToUpdate, IEnumerable<string> columnsToUpdate)
+        {
+            var command = new StringBuilder(UpdateQuery(tableInfo, columnsToUpdate));
+            return connection.Execute(command.ToString(), entityToUpdate, transaction, commandTimeout) > 0;
+        }
 
         /// <summary>
         ///     Inserts an entity into table "Ts"
@@ -148,10 +156,38 @@ namespace Dapper.Database.Adapters
         /// </summary>
         /// <param name="tableInfo">table information about the entity</param>
         /// <returns>An insert sql statement</returns>
-        protected override string BuildInsertQuery(TableInfo tableInfo)
+        protected string BuildInsertQueryORG(TableInfo tableInfo)
             => tableInfo.GeneratedColumns.Any()
                 ? $"insert into {EscapeTableName(tableInfo)} ({EscapeColumnList(tableInfo.InsertColumns)}) output {EscapeColumnListWithAliases(tableInfo.GeneratedColumns, "inserted")} values ({EscapeParameters(tableInfo.InsertColumns)}) "
                 : base.BuildInsertQuery(tableInfo);
+
+        /// <summary>
+        ///     implementation of an insert query.
+        /// </summary>
+        /// <param name="tableInfo">table information about the entity</param>
+        /// <returns>An insert sql statement</returns>
+        protected override string BuildInsertQuery(TableInfo tableInfo)
+            => tableInfo.GeneratedColumns.Any()
+                ? $"insert into {EscapeTableName(tableInfo)} ({EscapeColumnList(tableInfo.InsertColumns)}) values ({EscapeParameters(tableInfo.InsertColumns)});select SCOPE_IDENTITY() as Id "
+                : base.BuildInsertQuery(tableInfo);
+
+
+        /// <summary>
+        ///     Default implementation of an update query.
+        /// </summary>
+        /// <param name="tableInfo">table information about the entity</param>
+        /// <param name="columnsToUpdate">columns to be updated</param>
+        /// <returns>An update sql statement</returns>
+        protected string BuildUpdateQueryORG(TableInfo tableInfo, IEnumerable<string> columnsToUpdate)
+        {
+            if (!tableInfo.GeneratedColumns.Any()) return base.BuildUpdateQuery(tableInfo, columnsToUpdate);
+
+            var toUpdate = columnsToUpdate?.ToArray() ?? new string[0];
+
+            var updates = tableInfo.UpdateColumns.Where(ci => !toUpdate.Any() || toUpdate.Contains(ci.PropertyName));
+            return
+                $"update {EscapeTableName(tableInfo)} set {EscapeAssignmentList(updates)} output {EscapeColumnListWithAliases(tableInfo.GeneratedColumns, "inserted")} where {EscapeWhereList(tableInfo.ComparisonColumns)}";
+        }
 
         /// <summary>
         ///     Default implementation of an update query.
@@ -167,7 +203,7 @@ namespace Dapper.Database.Adapters
 
             var updates = tableInfo.UpdateColumns.Where(ci => !toUpdate.Any() || toUpdate.Contains(ci.PropertyName));
             return
-                $"update {EscapeTableName(tableInfo)} set {EscapeAssignmentList(updates)} output {EscapeColumnListWithAliases(tableInfo.GeneratedColumns, "inserted")} where {EscapeWhereList(tableInfo.ComparisonColumns)}";
+                $"update {EscapeTableName(tableInfo)} set {EscapeAssignmentList(updates)} where {EscapeWhereList(tableInfo.ComparisonColumns)}";
         }
     }
 }
