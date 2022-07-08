@@ -8,6 +8,18 @@ namespace Dapper.Database
     /// <seealso cref="System.IDisposable" />
     public partial interface ISqlDatabase : IDisposable
     {
+        /// <summary>
+        ///     Get the ConnectionString
+        /// </summary>
+        /// <returns></returns>
+        string GetConnectionString();
+
+        /// <summary>
+        /// Get dapper Connection
+        /// </summary>
+        /// <returns></returns>
+        IDbConnection GetConnection();
+
         #region Transaction Methods
 
         /// <summary>

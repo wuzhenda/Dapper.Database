@@ -16,6 +16,12 @@ namespace Dapper.Database
         /// </summary>
         /// <returns></returns>
         IDbConnection GetConnection();
+
+        /// <summary>
+        /// Get connection string
+        /// </summary>
+        /// <returns></returns>
+        string GetConnectionString();
     }
 
     /// <summary>
@@ -33,6 +39,9 @@ namespace Dapper.Database
         /// </summary>
         /// <returns></returns>
         public IDbConnection GetConnection() => (T) Activator.CreateInstance(typeof(T), _connectionString);
+
+        /// <inheritdoc />
+        public string GetConnectionString() => _connectionString;
     }
 
 #if !NETSTANDARD
@@ -61,6 +70,9 @@ namespace Dapper.Database
         {
             return (T)Activator.CreateInstance(typeof(T), ConfigurationManager.ConnectionStrings[_key].ConnectionString);
         }
+
+        /// <inheritdoc />
+        public string GetConnectionString() => ConfigurationManager.ConnectionStrings[_key].ConnectionString;
     }
 #endif
 }

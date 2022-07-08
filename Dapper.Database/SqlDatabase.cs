@@ -60,6 +60,13 @@ namespace Dapper.Database
         /// </summary>
         public void Dispose() => CloseSharedConnection();
 
+
+        /// <inheritdoc />
+        public string GetConnectionString() => ConnectionService.GetConnectionString();
+
+        /// <inheritdoc />
+        public IDbConnection GetConnection() => ConnectionService.GetConnection();
+
         /// <summary>
         /// </summary>
         /// <returns></returns>
