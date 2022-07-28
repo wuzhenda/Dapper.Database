@@ -103,13 +103,19 @@ namespace Dapper.Database
         /// <summary>
         /// </summary>
         public void CloseSharedConnection()
-        {
-            if (SharedConnection == null)
-                return;
+        {           
+            //try
+            //{
+                if (SharedConnection == null)
+                    return;
 
-            SharedConnection.Close();
-            SharedConnection.Dispose();
-            SharedConnection = null;
+                //SharedConnection.Close();
+                SharedConnection.Dispose();
+                SharedConnection = null;
+            //}catch(Exception e)
+            //{
+            //    DTrms.Common.Utility.LogFile.Error("000",$"get exception:"+e);
+            //}
         }
 
         /// <summary>
