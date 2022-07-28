@@ -39,6 +39,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net48' OR '$(TargetFramework)'=='net48'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net48'">
     <PackageReference Include="Microsoft.SqlServer.Compact" Version="4.0.8876.1" />
     <PackageReference Include="FirebirdSql.Data.FirebirdClient" Version="8.0.1" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.6" />

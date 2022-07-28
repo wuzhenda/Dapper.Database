@@ -7,6 +7,7 @@
     <Description>Alternative database first framework to Entity Framework using Dapper</Description>
     <Authors>Dallas Beek</Authors>
     <TargetFrameworks>netstandard2.0;net48;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net48;net6.0</TargetFrameworks>
     <Copyright>2020 Dallas Beek</Copyright>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
     <Version>1.0.0.1</Version>
@@ -18,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.90" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Update="SourceLink.Create.GitHub" Version="2.8.3" />
