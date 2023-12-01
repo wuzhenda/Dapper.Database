@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Threading.Tasks;
 
@@ -121,6 +121,7 @@ namespace Dapper.Database
             //{
             //    DTrms.Common.Utility.LogFile.Error("000",$"get exception:"+e);
             //}
+
         }
 
         /// <summary>
