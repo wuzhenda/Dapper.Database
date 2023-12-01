@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-
 #if !NETSTANDARD
 using System.Configuration;
 #endif
@@ -42,6 +41,7 @@ namespace Dapper.Database
 
         /// <inheritdoc />
         public string GetConnectionString() => _connectionString;
+
     }
 
 #if !NETSTANDARD
