@@ -41,7 +41,6 @@ namespace Dapper.Database
 
         /// <inheritdoc />
         public string GetConnectionString() => _connectionString;
-
     }
 
 #if !NETSTANDARD

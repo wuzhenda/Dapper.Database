@@ -121,7 +121,6 @@ namespace Dapper.Database
             //{
             //    DTrms.Common.Utility.LogFile.Error("000",$"get exception:"+e);
             //}
-
         }
 
         /// <summary>
